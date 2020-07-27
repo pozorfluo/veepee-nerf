@@ -1,6 +1,49 @@
 # veepee-nerf
 
 ## notes
+<!-- php bin/console make:entity -->
+
+- Client
+  - firstName
+  - lastName
+  - email
+  - address
+  - addressComplement
+  - city
+  - zipCode
+  - -> country
+  - phone
+  - -> deliveryAddress
+
+- DeliveryAddress
+  - -> client
+  - firstName
+  - lastName
+  - address
+  - addressComplement
+  - city
+  - zipCode
+  - -> country
+  - phone
+
+- Country
+  - name
+
+- Order
+  - -> client
+  - -> product
+  - paymentMethod
+  - total
+
+- Product
+  - sku
+  - name
+  - description
+  - price
+  - msrp
+  - inventory
+
+
 
 ## todo
 
@@ -36,7 +79,7 @@
         bien été enregistrée.
   - [ ] Enregistrer l'ID donné par l'API Centrale dans la BDD locale. On en aura
         besoin juste après pour mettre à jour le statut de commande.
-  - [ ] Rediriger vers la page de paiement avec l'id de l'Order qui provient de 
+  - [ ] Rediriger vers la page de paiement avec l'id de l'Order qui provient de
         la bdd de l'API
 - [ ] **Gestion du paiement avec Stripe ( et PayPal s'il reste assez de temps )**
   - [ ] intégrer le moyen de paiement stripe et paypal avec payum
@@ -44,11 +87,11 @@
 - [ ] **Communication à l'API Externe ( API Commerce ) :**
       **Créer la fonction de mise à jour du statut de commande**
   - [ ] Réutiliser le code précédent pour faire une requête similaire
-  - [ ] Ajouter le paramètre pour identifier la bonne commande ( à changer dans 
+  - [ ] Ajouter le paramètre pour identifier la bonne commande ( à changer dans
         l'url de la requête ) ​/order​/{id}​/status
-  - [ ] Ajouter la payload pour indiquer quel est le nouveau statut de commande 
+  - [ ] Ajouter la payload pour indiquer quel est le nouveau statut de commande
         ( = PAID )
-  - [ ] Envoi de l'email de confirmation du paiement au client avec Symfony, 
+  - [ ] Envoi de l'email de confirmation du paiement au client avec Symfony,
         SMTP et MailCatcher.
   - [ ] Création d'un compte sur MailCatcher
   - [ ] Changer le .env afin de remplir les paramètres SMTP de MailCatcher
