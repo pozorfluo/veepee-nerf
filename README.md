@@ -1,7 +1,6 @@
 # veepee-nerf
 
 ## notes
-<!-- php bin/console make:entity -->
 
 - Client
   - firstName
@@ -14,6 +13,7 @@
   - -> country
   - phone
   - -> deliveryAddress
+  - createdAt
 
 - DeliveryAddress
   - -> client
@@ -29,21 +29,21 @@
 - Country
   - name
 
-- Order
+- OrderInfo
   - -> client
   - -> product
   - paymentMethod
   - total
+  - createdAt
 
 - Product
   - sku
   - name
   - description
+  - image
   - price
   - msrp
   - inventory
-
-
 
 ## todo
 
