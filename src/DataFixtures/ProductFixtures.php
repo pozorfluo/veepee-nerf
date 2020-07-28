@@ -18,6 +18,7 @@ class ProductFixtures extends Fixture
                 'price' => 6490,
                 'msrp' => 9490,
                 'inventory' => 45,
+                'image' => 'nerf1.jpg',
             ],
             [
                 'sku' => 'BUNDLE-NERF-04025190',
@@ -26,6 +27,7 @@ class ProductFixtures extends Fixture
                 'price' => 5190,
                 'msrp' => 7990,
                 'inventory' => 120,
+                'image' => 'nerf2.jpg',
             ],
             [
                 'sku' => 'BUNDLE-NERF-01003990',
@@ -34,17 +36,26 @@ class ProductFixtures extends Fixture
                 'price' => 3990,
                 'msrp' => 5990,
                 'inventory' => 50,
+                'image' => 'nerf3.jpg',
             ],
         ];
 
         foreach ($raw_products as $raw_product) {
             $product = new Product();
-            $product->setSku($raw_product['sku'])
-                ->setName($raw_product['name'])
-                ->setDescription($raw_product['description'])
-                ->setPrice($raw_product['price'])
-                ->setMsrp($raw_product['msrp'])
-                ->setInventory($raw_product['inventory']);
+
+            foreach($raw_product as $key => $value) {
+                $setter = 'set'. ucfirst($key);
+                if(method_exists(Product::class, $setter))
+                {
+                    $product->$setter($value);
+                }
+            }
+            // $product->setSku($raw_product['sku'])
+            //     ->setName($raw_product['name'])
+            //     ->setDescription($raw_product['description'])
+            //     ->setPrice($raw_product['price'])
+            //     ->setMsrp($raw_product['msrp'])
+            //     ->setInventory($raw_product['inventory']);
             $manager->persist($product);
         }
 

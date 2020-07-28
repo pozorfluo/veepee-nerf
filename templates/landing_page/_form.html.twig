@@ -1,22 +1,76 @@
 {{ form_start(form) }}
-    <!-- {{ dump(form.product)}} -->
-    {% for key, item in form.product.children %}
-    {{ dump(item) }}
-    <p>
-      <label>
-        <input 
-          name="group1" 
-          value="{{item.vars.label}}"
-          id="{{item.vars.name}}"
-          name="{{item.vars.label}}"
-          type="radio"
-        />
-        <span style="color:red;">{{item.vars.label}}</span>
-      </label>
-    </p>
-    {% endfor %}
-    {{ form_widget(form) }}
-    <button type="submit" class="waves-effect waves-light btn">
-      {{ button_label|default('Test') }}
-    </button>
+{% for key, item in form.product.vars.choices %}
+{{ dump(item.data) }}
+<p>
+  <label>
+    <input
+      name="group1"
+      value="{{ item.data.sku }}"
+      id="{{ item.data.sku }}"
+      name="{{ item.data.sku }}"
+      type="radio"
+    />
+    <span style="color: red;">{{ item.data.sku }}</span>
+  </label>
+</p>
+
+<label class="cure-radio">
+  <input name="order[cart][cart_products][0]" value="{{ item.data.id }}" type="radio" />
+  <article>
+    <div class="card center-align">
+      <div class="row">
+        <div class="col s12 m12 l4">
+          <div class="image-content">
+            <img
+              src="assets/images/nerf1.jpg"
+              alt="10 Nerf Elite Jolt© + 2 offerts"
+              class="responsive-img"
+            />
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card-content">
+            <p class="h6">
+              10 Nerf© Elite Jolt
+            </p>
+            <p class="h5 color_brand_secondary">
+              + 4 OFFERTS
+            </p>
+            <p class="h4">
+              64,90€
+              <span class="h6"
+                ><br />au lieu de
+                <del class="h5 color_brand_secondary">94,90€</del>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="col s12 m6 l4">
+          <div class="card-content">
+            <p class="h6 color_brand_secondary">
+              J'économise 30€
+            </p>
+            <p class="h6">
+              + livraison gratuite
+            </p>
+            <div class="picto-wrapper">
+              <img
+                src="assets/images/like-product.png"
+                class="responsive-img"
+                alt="Garantie satisfait ou remboursé"
+              />
+              <p class="color_brand_primary">Satisfait<br />ou remboursé</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</label>
+
+{% endfor %}
+{{ form_widget(form) }}
+<button type="submit" class="waves-effect waves-light btn">
+  {{ button_label|default('Test') }}
+</button>
 {{ form_end(form) }}
