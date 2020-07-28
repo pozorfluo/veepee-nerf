@@ -1,6 +1,7 @@
 {{ form_start(form) }}
-    {% for key, item in form.country.children %}
-    <!-- {{ dump(item) }} -->
+    <!-- {{ dump(form.product)}} -->
+    {% for key, item in form.product.children %}
+    {{ dump(item) }}
     <p>
       <label>
         <input 

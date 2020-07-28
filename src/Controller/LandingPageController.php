@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Entity\DeliveryAddress;
+use App\Entity\OrderInfo;
 use App\Form\ClientType;
 use App\Form\DeliveryAddressType;
+use App\Form\OrderInfoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,8 @@ class LandingPageController extends AbstractController
     {
         $formData = [
             'client' => new Client(),
-            'delivery' => new DeliveryAddress()
+            'delivery' => new DeliveryAddress(),
+            'order' => new OrderInfo()
         ];
 
         $forms = [
@@ -52,11 +55,16 @@ class LandingPageController extends AbstractController
                 DeliveryAddressType::class,
                 $formData['delivery']
             ),
+            'order' => $this->createForm(
+                OrderInfoType::class,
+                $formData['order']
+            ),
         ];
 
         return $this->render('landing_page/form_test.html.twig', [
             'form_client' => $forms['client']->createView(),
             'form_delivery' => $forms['delivery']->createView(),
+            'form_order' => $forms['order']->createView(),
         ]);
     }
 }
