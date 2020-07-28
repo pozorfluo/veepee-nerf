@@ -49,13 +49,13 @@
 
 - [x] **Installer un nouveau projet symfony.**
 - [x] **Copier-coller le controller, les assets et les templates.**
-- [ ] **Créer les entités nécessaires ( Symfony Entities )**
-  - [ ] Créer les entity avec la console CLI de Symfony ( make:entity )
-  - [ ] Générer les migrations à partir des entités dans la BDD à l'aide de la
+- [x] **Créer les entités nécessaires ( Symfony Entities )**
+  - [x] Créer les entity avec la console CLI de Symfony ( make:entity )
+  - [x] Générer les migrations à partir des entités dans la BDD à l'aide de la
         console CLI Symfony ( make:migration )
-  - [ ] Migrer les migrations avec la console CLI ( doctrine:migrations:migrate )
+  - [x] Migrer les migrations avec la console CLI ( doctrine:migrations:migrate )
 - [ ] **Créer les classes de formulaire ( Symfony Form )**
-  - [ ] Créer les classes Types dans le dossier Form, à partir des entités
+  - [x] Créer les classes Types dans le dossier Form, à partir des entités
   - [ ] Integrer \$form->createview() dans le controlleur, et passer le résultat
         de cette fonction à une variable utilisée dans le template
 - [ ] **Gestion de la requête ( post-envoi du formulaire )**

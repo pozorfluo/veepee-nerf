@@ -1,0 +1,13 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Form Test{% endblock %}
+
+{% block body %}
+    <h1>Test ClientType form</h1>
+    <div class="container">
+      {{ include('landing_page/_form.html.twig', {'form': form_client}) }}
+      {{ include('landing_page/_form.html.twig', {'form': form_delivery}) }}
+    </div>
+
+{% endblock %}

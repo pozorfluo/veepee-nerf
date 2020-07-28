@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
+use App\Entity\DeliveryAddress;
+use App\Form\ClientType;
+use App\Form\DeliveryAddressType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LandingPageController extends AbstractController
@@ -25,5 +30,33 @@ class LandingPageController extends AbstractController
     public function confirmation()
     {
         return $this->render('landing_page/confirmation.html.twig', []);
+    }
+
+
+    /**
+     * @Route("/formtest", name="form_test")
+     */
+    public function formTest(): Response
+    {
+        $formData = [
+            'client' => new Client(),
+            'delivery' => new DeliveryAddress()
+        ];
+
+        $forms = [
+            'client' => $this->createForm(
+                ClientType::class,
+                $formData['client']
+            ),
+            'delivery' => $this->createForm(
+                DeliveryAddressType::class,
+                $formData['delivery']
+            ),
+        ];
+
+        return $this->render('landing_page/form_test.html.twig', [
+            'form_client' => $forms['client']->createView(),
+            'form_delivery' => $forms['delivery']->createView(),
+        ]);
     }
 }

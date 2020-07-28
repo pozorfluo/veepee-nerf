@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+    {% for key, item in form.country.children %}
+    <!-- {{ dump(item) }} -->
+    <p>
+      <label>
+        <input 
+          name="group1" 
+          value="{{item.vars.label}}"
+          id="{{item.vars.name}}"
+          name="{{item.vars.label}}"
+          type="radio"
+        />
+        <span style="color:red;">{{item.vars.label}}</span>
+      </label>
+    </p>
+    {% endfor %}
+    {{ form_widget(form) }}
+    <button type="submit" class="waves-effect waves-light btn">
+      {{ button_label|default('Test') }}
+    </button>
+{{ form_end(form) }}
