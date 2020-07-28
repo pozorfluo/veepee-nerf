@@ -21,7 +21,7 @@ class OrderInfoType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'choice_label' => 'description',
-                'choice_value' => 'sku',
+                'choice_value' => 'id',
             ])
         ;
     }

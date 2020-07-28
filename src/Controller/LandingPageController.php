@@ -22,24 +22,6 @@ class LandingPageController extends AbstractController
      */
     public function index(Request $request)
     {
-        //Your code here
-
-        return $this->render('landing_page/index.html.twig', []);
-    }
-    /**
-     * @Route("/confirmation", name="confirmation")
-     */
-    public function confirmation()
-    {
-        return $this->render('landing_page/confirmation.html.twig', []);
-    }
-
-
-    /**
-     * @Route("/formtest", name="form_test")
-     */
-    public function formTest(): Response
-    {
         $formData = [
             'client' => new Client(),
             'delivery' => new DeliveryAddress(),
@@ -60,11 +42,51 @@ class LandingPageController extends AbstractController
                 $formData['order']
             ),
         ];
-
-        return $this->render('landing_page/form_test.html.twig', [
+        return $this->render('landing_page/index.html.twig', [
             'form_client' => $forms['client']->createView(),
             'form_delivery' => $forms['delivery']->createView(),
             'form_order' => $forms['order']->createView(),
         ]);
     }
+    /**
+     * @Route("/confirmation", name="confirmation")
+     */
+    public function confirmation()
+    {
+        return $this->render('landing_page/confirmation.html.twig', []);
+    }
+
+
+    /**
+     * @Route("/formtest", name="form_test")
+     */
+    // public function formTest(): Response
+    // {
+    //     $formData = [
+    //         'client' => new Client(),
+    //         'delivery' => new DeliveryAddress(),
+    //         'order' => new OrderInfo()
+    //     ];
+
+    //     $forms = [
+    //         'client' => $this->createForm(
+    //             ClientType::class,
+    //             $formData['client']
+    //         ),
+    //         'delivery' => $this->createForm(
+    //             DeliveryAddressType::class,
+    //             $formData['delivery']
+    //         ),
+    //         'order' => $this->createForm(
+    //             OrderInfoType::class,
+    //             $formData['order']
+    //         ),
+    //     ];
+
+    //     return $this->render('landing_page/index.html.twig', [
+    //         'form_client' => $forms['client']->createView(),
+    //         'form_delivery' => $forms['delivery']->createView(),
+    //         'form_order' => $forms['order']->createView(),
+    //     ]);
+    // }
 }

@@ -52,6 +52,11 @@ class Product
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $hot;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +142,18 @@ class Product
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getHot(): ?bool
+    {
+        return $this->hot;
+    }
+
+    public function setHot(bool $hot): self
+    {
+        $this->hot = $hot;
 
         return $this;
     }

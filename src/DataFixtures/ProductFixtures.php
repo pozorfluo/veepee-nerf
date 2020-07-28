@@ -19,6 +19,7 @@ class ProductFixtures extends Fixture
                 'msrp' => 9490,
                 'inventory' => 45,
                 'image' => 'nerf1.jpg',
+                'hot' => true,
             ],
             [
                 'sku' => 'BUNDLE-NERF-04025190',
@@ -28,6 +29,17 @@ class ProductFixtures extends Fixture
                 'msrp' => 7990,
                 'inventory' => 120,
                 'image' => 'nerf2.jpg',
+                'hot' => false,
+            ],
+            [
+                'sku' => 'BUNDLE-NERF-01124490',
+                'name' => '1 Nerf© Green Moustigre',
+                'description' => '+ 12 OFFERTS',
+                'price' => 4490,
+                'msrp' => 5990,
+                'inventory' => 12,
+                'image' => 'nerf4.jpg',
+                'hot' => true,
             ],
             [
                 'sku' => 'BUNDLE-NERF-01003990',
@@ -37,6 +49,7 @@ class ProductFixtures extends Fixture
                 'msrp' => 5990,
                 'inventory' => 50,
                 'image' => 'nerf3.jpg',
+                'hot' => false,
             ],
         ];
 
@@ -50,12 +63,7 @@ class ProductFixtures extends Fixture
                     $product->$setter($value);
                 }
             }
-            // $product->setSku($raw_product['sku'])
-            //     ->setName($raw_product['name'])
-            //     ->setDescription($raw_product['description'])
-            //     ->setPrice($raw_product['price'])
-            //     ->setMsrp($raw_product['msrp'])
-            //     ->setInventory($raw_product['inventory']);
+
             $manager->persist($product);
         }
 

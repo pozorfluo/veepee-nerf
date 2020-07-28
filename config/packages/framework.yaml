@@ -15,3 +15,12 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    assets:
+            base_path: assets/
+            packages:
+                scripts:
+                    base_path: assets/js/
+                styles:
+                    base_path: assets/css/
+                images:
+                    base_path: assets/images/
