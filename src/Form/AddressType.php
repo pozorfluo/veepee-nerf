@@ -3,13 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Country;
-use App\Entity\DeliveryAddress;
+use App\Entity\Address;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DeliveryAddressType extends AbstractType
+class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -24,10 +24,7 @@ class DeliveryAddressType extends AbstractType
             // ->add('client')
             ->add('country', EntityType::class, [
                 'class' => Country::class,
-                // 'choice_label' => 'id',
-                // 'choice_value' => 'name',
-                // 'choice_attr' => 'name',
-                // 'data' => 'name',
+                'placeholder' => 'Choisissez un pays',
                 'expanded' => true,
                 'multiple' => false,
             ])
@@ -37,7 +34,7 @@ class DeliveryAddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => DeliveryAddress::class,
+            'data_class' => Address::class,
         ]);
     }
 }

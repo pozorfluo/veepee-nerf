@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\DeliveryAddressRepository;
+use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DeliveryAddressRepository::class)
+ * @ORM\Entity(repositoryClass=AddressRepository::class)
  */
-class DeliveryAddress
+class Address
 {
     /**
      * @ORM\Id()
@@ -17,11 +17,6 @@ class DeliveryAddress
      */
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Client::class, inversedBy="deliveryAddress", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $client;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,22 +59,21 @@ class DeliveryAddress
      */
     private $phone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="addresses")
+     */
+    private $client;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(Client $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
 
     public function getFirstName(): ?string
     {
@@ -173,6 +167,29 @@ class DeliveryAddress
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

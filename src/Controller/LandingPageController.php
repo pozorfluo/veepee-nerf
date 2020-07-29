@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Client;
-use App\Entity\DeliveryAddress;
+use App\Entity\Address;
 use App\Entity\OrderInfo;
 use App\Form\ClientType;
-use App\Form\DeliveryAddressType;
+use App\Form\AddressType;
 use App\Form\OrderInfoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,13 +23,24 @@ class LandingPageController extends AbstractController
     public function index(Request $request)
     {
         $client = new Client();
-        $client->setDeliveryAddress(new DeliveryAddress());
+        // $client->setAddress(new Address());
 
         $orderInfo = new OrderInfo();
         $orderInfo->setStatus('Waiting')
             ->setClient($client);
 
         $form = $this->createForm(OrderInfoType::class, $orderInfo);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form);
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($orderInfo);
+            $entityManager->flush();
+
+            return new Response('submitted, valid.');
+        }
 
         return $this->render('landing_page/index.html.twig', [
             'form' => $form->createView()

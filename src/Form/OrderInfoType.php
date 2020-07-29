@@ -8,6 +8,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderInfoType extends AbstractType
@@ -26,7 +28,15 @@ class OrderInfoType extends AbstractType
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => ['stripe', 'paypal']
             ])
-            ;
+            ->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) {
+                    /** @var OrderInfo $orderInfo */
+                    $orderInfo = $event->getData();
+                    dump($event);
+                    $delivery = $orderInfo->getClient()->getDeliveryAddress();
+                }
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
