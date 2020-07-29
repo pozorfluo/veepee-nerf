@@ -22,8 +22,15 @@ class LandingPageController extends AbstractController
      */
     public function index(Request $request)
     {
+        $billing = new Address();
+        $billing->setType('billing');
+
+        $delivery = new Address();
+        $delivery->setType('delivery');
+        
         $client = new Client();
-        // $client->setAddress(new Address());
+        $client->addAddress($billing);
+        $client->addAddress($delivery);
 
         $orderInfo = new OrderInfo();
         $orderInfo->setStatus('Waiting')

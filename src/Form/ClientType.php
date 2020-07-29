@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,8 +22,9 @@ class ClientType extends AbstractType
                 'first_options' => ['label' => 'Email'],
                 'second_options' => ['label' => 'Confirmation email']
             ])
-            ->add('billingAddress', AddressType::class)
-            ->add('deliveryAddress', AddressType::class)
+            ->add('addresses', CollectionType::class, [
+                'entry_type' => AddressType::class
+            ])
         ;
     }
 

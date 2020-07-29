@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class OrderInfoType extends AbstractType
 {
@@ -24,6 +25,13 @@ class OrderInfoType extends AbstractType
                 'multiple' => false,
                 'choice_label' => 'description',
                 'choice_value' => 'id',
+                'constraints' => [
+                    new Valid(
+                        [
+                            'groups' => ['order']
+                        ]
+                    )
+                ]
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => ['stripe', 'paypal']
@@ -34,7 +42,7 @@ class OrderInfoType extends AbstractType
                     /** @var OrderInfo $orderInfo */
                     $orderInfo = $event->getData();
                     dump($event);
-                    $delivery = $orderInfo->getClient()->getDeliveryAddress();
+                    $delivery = $orderInfo->getClient()->getAddresses();
                 }
             );
     }
@@ -43,6 +51,7 @@ class OrderInfoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => OrderInfo::class,
+            'validation_groups' => ['Default', 'order']
         ]);
     }
 }
