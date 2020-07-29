@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\OrderInfo;
 use App\Entity\Product;
+use App\Entity\Client;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,8 +19,7 @@ class OrderInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', ClientType::class, [
-            ])
+            ->add('client', ClientType::class)
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'expanded' => true,
@@ -30,21 +30,42 @@ class OrderInfoType extends AbstractType
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => ['stripe', 'paypal']
             ])
-            ->add('paypal', SubmitType::class, [
-                'attr' => ['class' => 'waves-effect waves-light btn'],
-            ])
+            // ->add('paypal', SubmitType::class, [
+            //     'attr' => ['class' => 'waves-effect waves-light btn'],
+            // ])
             ->add('stripe', SubmitType::class, [
                 'attr' => ['class' => 'waves-effect waves-light btn'],
             ])
             ->addEventListener(
-                FormEvents::POST_SUBMIT,
+                FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
-                    /** @var OrderInfo $orderInfo */
-                    $orderInfo = $event->getData();
-                    dump($event);
-                    $delivery = $orderInfo->getClient()->getAddresses();
+                    /**
+                     * If delivery address is untouched, clone billing
+                     * address before form handling and validation.
+                     * 
+                     * https://symfony.com/doc/current/form/events.html
+                     */
+                    $data = $event->getData();
+
+                    $billingAddress = &$data['client']['addresses'][0];
+                    $deliveryAddress = &$data['client']['addresses'][1];
+
+                    if (empty(implode("", $deliveryAddress))) {
+                        $deliveryAddress = $billingAddress;
+                    }
+                    $event->setData($data);
                 }
-            );
+            )
+            // ->addEventListener(
+            //     FormEvents::POST_SUBMIT,
+            //     function (FormEvent $event) {
+            //         $client = $event->getData()->getClient();
+            //         $client->getAddresses()[0]->setType('billing');
+            //         $client->getAddresses()[1]->setType('delivery');
+            //         // dd($event);
+            //     }
+            // )
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

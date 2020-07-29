@@ -41,7 +41,7 @@ class Client
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
-     * @Assert\Collection({
+     * @Assert\All({
      *        @Assert\Type(type="App\Entity\Address"),
      * })
      * @Assert\Valid

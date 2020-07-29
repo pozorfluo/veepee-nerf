@@ -27,10 +27,12 @@ class LandingPageController extends AbstractController
 
         $delivery = new Address();
         $delivery->setType('delivery');
-        
+
         $client = new Client();
         $client->addAddress($billing);
         $client->addAddress($delivery);
+        // $client->addAddress(new Address())
+        //     ->addAddress(new Address());
 
         $orderInfo = new OrderInfo();
         $orderInfo->setStatus('Waiting')
