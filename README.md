@@ -2,49 +2,6 @@
 
 ## notes
 
-- Client
-  - firstName
-  - lastName
-  - email
-  - address
-  - addressComplement
-  - city
-  - zipCode
-  - -> country
-  - phone
-  - -> deliveryAddress
-  - createdAt
-
-- DeliveryAddress
-  - -> client
-  - firstName
-  - lastName
-  - address
-  - addressComplement
-  - city
-  - zipCode
-  - -> country
-  - phone
-
-- Country
-  - name
-
-- OrderInfo
-  - -> client
-  - -> product
-  - paymentMethod
-  - total
-  - createdAt
-
-- Product
-  - sku
-  - name
-  - description
-  - image
-  - price
-  - msrp
-  - inventory
-
 ## todo
 
 - [x] **Installer un nouveau projet symfony.**

@@ -1,5 +1,6 @@
 {{ form_start(form) }}
-{% for key, item in form.product.vars.choices %}
+
+{% for key, item in form.children.product.vars.choices %}
 <label class="cure-radio">
   <input name="order[cart][cart_products][0]" value="{{ item.data.id }}" type="radio" />
   <article>
@@ -60,7 +61,8 @@
 </label>
 
 {% endfor %}
+
+{{ form_end(form) }}
 <button type="submit" class="waves-effect waves-light btn">
   {{ button_label|default('Test') }}
 </button>
-{{ form_end(form) }}

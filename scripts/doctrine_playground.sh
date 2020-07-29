@@ -32,5 +32,9 @@ php bin/console make:migration
 # run migration
 php bin/console doctrine:migrations:migrate
 
+# create dummy database data
+composer require orm-fixtures --dev
+php bin/console make:fixtures
+
 # empty database and reload all fixture classes
 php bin/console doctrine:fixtures:load
