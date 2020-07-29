@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AddressRepository::class)
@@ -20,16 +21,28 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern="/^['\-\pL][\s'\-\pL]+/",
+     *     message="Votre prénom ne peut pas contenir de chiffre ou commencer par un espace."
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(
+     *     pattern="/^['\-\pL][\s'\-\pL]+/",
+     *     message="Votre nom ne peut pas contenir de chiffre ou commencer par un espace."
+     * )
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Votre addresse ne peut être vide."
+     * )
      */
     private $address;
 
@@ -40,11 +53,17 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Votre ville ne peut être vide."
+     * )
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Votre code postal ne peut être vide."
+     * )
      */
     private $zipCode;
 
@@ -56,6 +75,9 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Votre téléphone ne peut être vide."
+     * )
      */
     private $phone;
 

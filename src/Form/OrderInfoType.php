@@ -7,6 +7,7 @@ use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -35,6 +36,12 @@ class OrderInfoType extends AbstractType
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => ['stripe', 'paypal']
+            ])
+            ->add('paypal', SubmitType::class, [
+                'attr' => ['class' => 'waves-effect waves-light btn'],
+            ])
+            ->add('stripe', SubmitType::class, [
+                'attr' => ['class' => 'waves-effect waves-light btn'],
             ])
             ->addEventListener(
                 FormEvents::POST_SUBMIT,
