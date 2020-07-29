@@ -53,6 +53,7 @@ class OrderInfo
     {
         $now = new \DateTime();
         $this->createdAt = $now;
+        $this->total = 0;
     }
 
 

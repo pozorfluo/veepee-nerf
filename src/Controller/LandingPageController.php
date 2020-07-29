@@ -46,7 +46,8 @@ class LandingPageController extends AbstractController
             $entityManager->persist($orderInfo);
             $entityManager->flush();
 
-            return new Response('submitted, valid.');
+            // return new Response('submitted, valid.');
+            return $this->redirectToRoute('confirmation');
         }
 
         return $this->render('landing_page/index.html.twig', [

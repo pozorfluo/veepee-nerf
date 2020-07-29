@@ -36,7 +36,7 @@ class Client
     private $orderInfo;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="address_order", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="client", cascade={"persist", "remove"})
      */
     private $addresses;
 
