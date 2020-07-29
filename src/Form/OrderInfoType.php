@@ -19,20 +19,14 @@ class OrderInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', ClientType::class)
+            ->add('client', ClientType::class, [
+            ])
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'expanded' => true,
                 'multiple' => false,
                 'choice_label' => 'description',
                 'choice_value' => 'id',
-                'constraints' => [
-                    new Valid(
-                        [
-                            'groups' => ['order']
-                        ]
-                    )
-                ]
             ])
             ->add('paymentMethod', ChoiceType::class, [
                 'choices' => ['stripe', 'paypal']
@@ -58,7 +52,6 @@ class OrderInfoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => OrderInfo::class,
-            'validation_groups' => ['Default', 'order']
         ]);
     }
 }

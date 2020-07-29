@@ -25,8 +25,6 @@ class AddressType extends AbstractType
             ->add('country', EntityType::class, [
                 'class' => Country::class,
                 'placeholder' => 'Choisissez un pays',
-                'expanded' => true,
-                'multiple' => false,
             ])
         ;
     }

@@ -21,7 +21,9 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(
+     *     message="Votre prénom ne peut être vide."
+     * )
      * @Assert\Regex(
      *     pattern="/^['\-\pL][\s'\-\pL]+/",
      *     message="Votre prénom ne peut pas contenir de chiffre ou commencer par un espace."
@@ -31,6 +33,9 @@ class Address
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Votre nom ne peut être vide."
+     * )
      * @Assert\Regex(
      *     pattern="/^['\-\pL][\s'\-\pL]+/",
      *     message="Votre nom ne peut pas contenir de chiffre ou commencer par un espace."
@@ -70,6 +75,9 @@ class Address
     /**
      * @ORM\ManyToOne(targetEntity=Country::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(
+     *     message="Votre pays ne peut être vide."
+     * )
      */
     private $country;
 

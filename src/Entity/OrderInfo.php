@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderInfoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderInfoRepository::class)
@@ -20,6 +21,8 @@ class OrderInfo
     /**
      * @ORM\OneToOne(targetEntity=Client::class, inversedBy="orderInfo", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type(type="App\Entity\Client")
+     * @Assert\Valid
      */
     private $client;
 
