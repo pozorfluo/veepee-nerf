@@ -25,9 +25,12 @@ class Address
      *     message="Votre prénom ne peut être vide."
      * )
      * @Assert\Regex(
-     *     pattern="/^['\-\pL][\s'\-\pL]+/",
-     *     message="Votre prénom ne peut pas contenir de chiffre ou commencer par un espace."
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre prénom ne peut pas contenir de chiffre."
      * )
+     * 
+     * pattern="/^['\-\pL][\s'\-\pL]+/",
      */
     private $firstName;
 
@@ -37,9 +40,11 @@ class Address
      *     message="Votre nom ne peut être vide."
      * )
      * @Assert\Regex(
-     *     pattern="/^['\-\pL][\s'\-\pL]+/",
-     *     message="Votre nom ne peut pas contenir de chiffre ou commencer par un espace."
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre nom ne peut pas contenir de chiffre."
      * )
+     * pattern="/^['\-\pL][\s'\-\pL]+/",
      */
     private $lastName;
 
