@@ -1,5 +1,5 @@
 <div class="input-field">
-  <div class="form-error">{{- form_errors(form.product) -}}</div>
+  <h4 class="form-error">{{- form_errors(form.product) -}}</h4>
   <div id="order_info_product">
     {% for key, item in form.children.product.vars.choices %}
     <label class="cure-radio required">

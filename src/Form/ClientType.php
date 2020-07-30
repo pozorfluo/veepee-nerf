@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ClientType extends AbstractType
 {
@@ -22,6 +22,11 @@ class ClientType extends AbstractType
                 'required' => true,
                 'first_options' => ['label' => 'Email'],
                 'second_options' => ['label' => 'Confirmation email'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Votre email ne peut être vide.',
+                    ]),
+                ],
                 ])
             ->add('addresses', CollectionType::class, [
                 'entry_type' => AddressType::class,

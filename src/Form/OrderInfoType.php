@@ -32,7 +32,7 @@ class OrderInfoType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'N\'oubliez pas de choisir une bonne affaire !',
+                        'message' => 'Choisissez votre bonne affaire !',
                     ]),
                 ],
             ])
