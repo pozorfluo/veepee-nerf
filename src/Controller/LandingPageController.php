@@ -17,7 +17,7 @@ class LandingPageController extends AbstractController
     /**
      * @Route("/", name="landing_page")
      */
-    public function index(Request $request)
+    public function index(Request $request) : Response
     {
         $orderInfo = (new OrderInfo())
             ->setStatus('Waiting')
@@ -50,10 +50,11 @@ class LandingPageController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+    
     /**
      * @Route("/confirmation", name="confirmation")
      */
-    public function confirmation()
+    public function confirmation() : Response
     {
         return $this->render('landing_page/confirmation.html.twig', []);
     }

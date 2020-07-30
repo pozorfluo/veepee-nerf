@@ -25,6 +25,7 @@ class ClientType extends AbstractType
                 ])
             ->add('addresses', CollectionType::class, [
                 'entry_type' => AddressType::class,
+                'label' => false,
                 'entry_options' => ['label' => false],
             ])
         ;

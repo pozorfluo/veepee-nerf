@@ -19,7 +19,9 @@ class OrderInfoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('client', ClientType::class)
+            ->add('client', ClientType::class, [
+                'label' => false,
+            ])
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'expanded' => true,
@@ -30,11 +32,11 @@ class OrderInfoType extends AbstractType
             ])
             ->add('stripe', SubmitType::class, [
                 'label' => 'Payer par carte bancaire',
-                'attr' => ['class' => 'waves-effect waves-light btn'],
+                'attr' => ['class' => 'btn-large btn-block waves-effect waves-light btn'],
             ])
             ->add('paypal', SubmitType::class, [
-                'label' => 'Payer avec Paypal',
-                'attr' => ['class' => 'waves-effect waves-light btn'],
+                'label' => 'Continuer sur PayPal',
+                'attr' => ['class' => 'btn-large btn-block waves-effect waves-light btn'],
             ])
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,

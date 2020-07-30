@@ -1,5 +1,3 @@
-{{ form_start(form, { 'attr': {'novalidate': 'novalidate'}}) }}
-
 {% for key, item in form.children.product.vars.choices %}
 <label class="cure-radio">
   <input name="order[cart][cart_products][0]" value="{{ item.data.id }}" type="radio" />
@@ -61,8 +59,3 @@
 </label>
 
 {% endfor %}
-
-{{ form_end(form) }}
-<button type="submit" class="waves-effect waves-light btn">
-  {{ button_label|default('Test') }}
-</button>
