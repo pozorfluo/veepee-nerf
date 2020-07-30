@@ -133,4 +133,17 @@ class Client
 
         return $this;
     }
+
+    public function getData(): array
+    {
+        $client =  get_object_vars($this);
+        unset($client['orderInfo']);
+        $client['addresses'] = [];
+
+        foreach($this->addresses as $address) {
+            $client['addresses'] = $address->getData();
+        }
+
+        return $client;
+    }
 }

@@ -242,4 +242,12 @@ class Address
     //     }
     //     return true;
     // }
+
+    public function getData(): array
+    {
+        $address = get_object_vars($this);
+        $address['country'] = $this->country->getName();
+        unset($address['client']);
+        return $address;
+    }
 }

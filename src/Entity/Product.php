@@ -157,4 +157,9 @@ class Product
 
         return $this;
     }
+
+    public function getData(): array
+    {
+        return get_object_vars($this);
+    }
 }

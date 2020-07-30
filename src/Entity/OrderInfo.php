@@ -153,4 +153,12 @@ class OrderInfo
 
         return $this;
     }
+
+    public function getData(): array
+    {
+        $orderInfo = get_object_vars($this);
+        $orderInfo['product'] = $this->product->getData();
+        $orderInfo['client'] = $this->client->getData();
+        return $orderInfo;
+    }
 }

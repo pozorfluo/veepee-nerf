@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Ecommerce\ApiCommerceClient;
 use App\Entity\Client;
 use App\Entity\Address;
 use App\Entity\OrderInfo;
@@ -20,8 +21,10 @@ class LandingPageController extends AbstractController
     /**
      * @Route("/", name="landing_page")
      */
-    public function index(Request $request): Response
-    {
+    public function index(
+        Request $request,
+        ApiCommerceClient $apiClient
+    ): Response {
         $order = (new OrderInfo())
             ->setStatus('Waiting')
             ->setClient(
@@ -43,8 +46,10 @@ class LandingPageController extends AbstractController
                         : 'stripe'
                 );
 
+            // $order->setApiOrderId(65);
+
             try {
-                $order->setApiOrderId($this->processOrder($order));
+                $order->setApiOrderId($apiClient->createOrder($order));
             } catch (ClientException $e) {
                 dump($e);
                 return $this->redirectToRoute("api_test", [
@@ -56,7 +61,7 @@ class LandingPageController extends AbstractController
 
             $entityManager->persist($order);
             $entityManager->flush();
-
+            dd($order);
             return $this->redirectToRoute('confirmation');
         }
 
@@ -72,60 +77,6 @@ class LandingPageController extends AbstractController
     {
         return $this->render('landing_page/confirmation.html.twig', []);
     }
-    private function processOrder(OrderInfo $order): int
-    {
-        $httpClient = HttpClient::create();
-
-        dd($order);
-
-        $url = 'https://api-commerce.simplon-roanne.com/order';
-        $payload = <<<JSON
-        {
-            "order": {
-                "id": 1,
-                "product": "Nerf Elite Jolt",
-                "payment_method": "paypal",
-                "status": "WAITING",
-                "client": {
-                "firstname": "Z",
-                "lastname": "API CALL TEST",
-                "email": "francois.dupont@gmail.com"
-                },
-                "addresses": {
-                "billing": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                },
-                "shipping": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                }
-                }
-            }
-        }
-JSON;
-        $response = $httpClient->request('POST', $url, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'veepee-nerf'
-            ],
-            'body' => $payload,
-            'timeout' => 10
-        ]);
-
-        dd($response->getContent());
-        return $response->toArray()['order_id'];
-    }
 
     /**
      * @Route("/api", name="api_test")
@@ -136,14 +87,14 @@ JSON;
         $payload = <<<JSON
         {
             "order": {
-                "id": 1,
+                "id": 5,
                 "product": "Nerf Elite Jolt",
                 "payment_method": "paypal",
                 "status": "WAITING",
                 "client": {
-                "firstname": "Z",
-                "lastname": "API CALL TEST",
-                "email": "francois.dupont@gmail.com"
+                    "firstname": "Z",
+                    "lastname": "API CALL TEST",
+                    "email": "francois.dupont@gmail.com"
                 },
                 "addresses": {
                 "billing": {
