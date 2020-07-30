@@ -52,6 +52,11 @@ class OrderInfo
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $apiOrderId;
+
     public function __construct()
     {
         $now = new \DateTime();
@@ -133,6 +138,18 @@ class OrderInfo
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getApiOrderId(): ?int
+    {
+        return $this->apiOrderId;
+    }
+
+    public function setApiOrderId(int $apiOrderId): self
+    {
+        $this->apiOrderId = $apiOrderId;
 
         return $this;
     }
