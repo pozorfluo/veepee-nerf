@@ -26,14 +26,14 @@ class OrderInfoType extends AbstractType
                 'multiple' => false,
                 'choice_label' => 'description',
                 'choice_value' => 'id',
+                'required' => true,
             ])
-            ->add('paymentMethod', ChoiceType::class, [
-                'choices' => ['stripe', 'paypal']
-            ])
-            // ->add('paypal', SubmitType::class, [
-            //     'attr' => ['class' => 'waves-effect waves-light btn'],
-            // ])
             ->add('stripe', SubmitType::class, [
+                'label' => 'Payer par carte bancaire',
+                'attr' => ['class' => 'waves-effect waves-light btn'],
+            ])
+            ->add('paypal', SubmitType::class, [
+                'label' => 'Payer avec Paypal',
                 'attr' => ['class' => 'waves-effect waves-light btn'],
             ])
             ->addEventListener(
@@ -55,17 +55,7 @@ class OrderInfoType extends AbstractType
                     }
                     $event->setData($data);
                 }
-            )
-            // ->addEventListener(
-            //     FormEvents::POST_SUBMIT,
-            //     function (FormEvent $event) {
-            //         $client = $event->getData()->getClient();
-            //         $client->getAddresses()[0]->setType('billing');
-            //         $client->getAddresses()[1]->setType('delivery');
-            //         // dd($event);
-            //     }
-            // )
-            ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
