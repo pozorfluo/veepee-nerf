@@ -1,67 +1,72 @@
-  <div class="form-error"></div>
-  {% for key, item in form.children.product.vars.choices %}
-  <label class="cure-radio required">
-    <input 
-      name="order_info[product]" 
-      id="order_info_product_{{ item.data.id }}"
-      value="{{ item.data.id }}" 
-      type="radio" 
-    />
+<div class="input-field">
+  <div class="form-error">{{- form_errors(form.product) -}}</div>
+  <div id="order_info_product">
+    {% for key, item in form.children.product.vars.choices %}
+    <label class="cure-radio required">
+      <input
+        name="order_info[product]"
+        id="order_info_product_{{ item.data.id }}"
+        value="{{ item.data.id }}"
+        type="radio"
+      />
 
-    <article>
-      <div class="card center-align">
-        <div class="row">
-          <div class="col s12 m12 l4">
-            {% if item.data.hot %}
-            <div class="promo">Offre la plus populaire !</div>
-            {% endif %}
-            <div class="image-content">
-              <img
-                src="{{ asset( item.data.image, 'images')}}"
-                alt="{{ item.data.name ~ item.data.description}}"
-                class="responsive-img"
-              />
-            </div>
-          </div>
-          <div class="col s12 m6 l4">
-            <div class="card-content">
-              <p class="h6">
-                {{ item.data.name }}
-              </p>
-              <p class="h5 color_brand_secondary">
-                {{ item.data.description }}
-              </p>
-              <p class="h4">
-                {{ (item.data.price / 100) |format_currency('EUR', {fraction_digit: 2}) }}
-                <span class="h6"
-                  ><br />au lieu de
-                  <del class="h5 color_brand_secondary">
-                    {{ (item.data.msrp / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
-                  </del>
-                </span>
-              </p>
-            </div>
-          </div>
-          <div class="col s12 m6 l4">
-            <div class="card-content">
-              <p class="h6 color_brand_secondary">
-                J'économise {{ ((item.data.msrp - item.data.price) / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
-              </p>
-              <p class="h6">
-                + livraison gratuite
-              </p>
-              <div class="picto-wrapper">
+      <article>
+        <div class="card center-align">
+          <div class="row">
+            <div class="col s12 m12 l4">
+              {% if item.data.hot %}
+              <div class="promo">Offre la plus populaire !</div>
+              {% endif %}
+              <div class="image-content">
                 <img
-                  src="{{ asset( 'like-product.png', 'images')}}"
+                  src="{{ asset(item.data.image, 'images') }}"
+                  alt="{{ item.data.name ~ item.data.description}}"
                   class="responsive-img"
-                  alt="Garantie satisfait ou remboursé"
                 />
-                <p class="color_brand_primary">Satisfait<br />ou remboursé</p>
+              </div>
+            </div>
+            <div class="col s12 m6 l4">
+              <div class="card-content">
+                <p class="h6">
+                  {{ item.data.name }}
+                </p>
+                <p class="h5 color_brand_secondary">
+                  {{ item.data.description }}
+                </p>
+                <p class="h4">
+                  {{ (item.data.price / 100) |format_currency('EUR', {fraction_digit: 2}) }}
+                  <span class="h6"
+                    ><br />au lieu de
+                    <del class="h5 color_brand_secondary">
+                      {{ (item.data.msrp / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
+                    </del>
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="col s12 m6 l4">
+              <div class="card-content">
+                <p class="h6 color_brand_secondary">
+                  J'économise
+                  {{ ((item.data.msrp - item.data.price) / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
+                </p>
+                <p class="h6">
+                  + livraison gratuite
+                </p>
+                <div class="picto-wrapper">
+                  <img
+                    src="{{ asset('like-product.png', 'images') }}"
+                    class="responsive-img"
+                    alt="Garantie satisfait ou remboursé"
+                  />
+                  <p class="color_brand_primary">Satisfait<br />ou remboursé</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </article>
-  </label>
-  {% endfor %}
+      </article>
+    </label>
+    {% endfor %}
+  </div>
+</div>

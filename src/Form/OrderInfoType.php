@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class OrderInfoType extends AbstractType
 {
@@ -29,6 +30,11 @@ class OrderInfoType extends AbstractType
                 'choice_label' => 'description',
                 'choice_value' => 'id',
                 'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'N\'oubliez pas de choisir une bonne affaire !',
+                    ]),
+                ],
             ])
             ->add('stripe', SubmitType::class, [
                 'label' => 'Payer par carte bancaire',
