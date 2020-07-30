@@ -1,61 +1,86 @@
-{% for key, item in form.children.product.vars.choices %}
-<label class="cure-radio">
-  <input name="order[cart][cart_products][0]" value="{{ item.data.id }}" type="radio" />
-  <article>
-    <div class="card center-align">
-      <div class="row">
-        <div class="col s12 m12 l4">
-          {% if item.data.hot %}
-          <div class="promo">Offre la plus populaire !</div>
-          {% endif %}
-          <div class="image-content">
-            <img
-              src="{{ asset( item.data.image, 'images')}}"
-              alt="{{ item.data.name ~ item.data.description}}"
-              class="responsive-img"
-            />
-          </div>
-        </div>
-        <div class="col s12 m6 l4">
-          <div class="card-content">
-            <p class="h6">
-              {{ item.data.name }}
-            </p>
-            <p class="h5 color_brand_secondary">
-              {{ item.data.description }}
-            </p>
-            <p class="h4">
-              {{ (item.data.price / 100) |format_currency('EUR', {fraction_digit: 2}) }}
-              <span class="h6"
-                ><br />au lieu de
-                <del class="h5 color_brand_secondary">
-                  {{ (item.data.msrp / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
-                </del>
-              </span>
-            </p>
-          </div>
-        </div>
-        <div class="col s12 m6 l4">
-          <div class="card-content">
-            <p class="h6 color_brand_secondary">
-              J'économise {{ ((item.data.msrp - item.data.price) / 100 )|format_currency('EUR', {fraction_digit: 2}) }}
-            </p>
-            <p class="h6">
-              + livraison gratuite
-            </p>
-            <div class="picto-wrapper">
-              <img
-                src="{{ asset( 'like-product.png', 'images')}}"
-                class="responsive-img"
-                alt="Garantie satisfait ou remboursé"
-              />
-              <p class="color_brand_primary">Satisfait<br />ou remboursé</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </article>
-</label>
+{% form_theme form 'landing_page/_form_theme.html.twig' %}
 
-{% endfor %}
+<style type="text/css">
+	.form-error {
+		color: red;
+		font-weight: bold;
+		padding-bottom: 10px;
+	}
+	.form-error ul {
+		margin: 0;
+	}
+</style>
+
+{# Etape 2 #}
+<div class="card step_2">
+	<div class="card-content">
+		<span class="card-title color_product_primary center-align">Étape 2</span>
+		<p class="h6 center-align">Remplissez ce formulaire</p>
+		<div class="form-wrapper">
+			{{ form_row(form.client.addresses.0.firstName, { 'label': 'Prénom' }) }}
+			{{ form_row(form.client.addresses.0.lastName, { 'label': 'Nom' }) }}
+			{{ form_row(form.client.addresses.0.address, { 'label': 'Adresse' }) }}
+			{{ form_row(form.client.addresses.0.addressComplement, { 'label': 'Complément adr.' }) }}
+			{{ form_row(form.client.addresses.0.city, { 'label': 'Ville' }) }}
+			{{ form_row(form.client.addresses.0.zipCode, { 'label': 'Code postal' }) }}
+			{{ form_row(form.client.addresses.0.phone, { 'label': 'Téléphone' }) }}
+			{{ form_row(form.client.addresses.0.country, { 'label': 'Pays', 'required':false }) }}
+			{{ form_row(form.client.email)}}
+		</div>
+	</div>
+	<ul class="collapsible">
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">markunread_mailbox</i>Adresse de livraison différente ?</div>
+			<div class="collapsible-body">
+				{{ form_row(form.client.addresses.1.firstName, { 'label': 'Prénom', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.lastName, { 'label': 'Nom', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.address, { 'label': 'Adresse', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.addressComplement, { 'label': 'Complément adr.', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.city, { 'label': 'Ville', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.zipCode, { 'label': 'Code postal', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.phone, { 'label': 'Téléphone', 'required':false }) }}
+				{{ form_row(form.client.addresses.1.country, { 'label': 'Pays', 'required':false }) }}
+			</div>
+		</li>
+	</ul>
+</div>
+
+{# Etape 3 #}
+<div class="card step_3">
+	<div class="card-content">
+		<span class="card-title color_product_primary center-align">Étape 3</span>
+		<p class="h6 center-align">Choisissez un paiement</p>
+		<ul class="collapsible">
+			<li class="active">
+				<div class="collapsible-header">
+					<i class="fas fa-credit-card"></i>Payer avec la Carte Bancaire</div>
+				<div class="collapsible-body card-form">
+					<div class="row">
+						<div class="center-align">
+							{{ form_row(form.stripe) }}
+							<p>J'accepte les
+								<a href="https://feelwellshop.com/fr/conditions-generales-de-ventes" target="_blank">conditions générales de vente</a>
+							</p>
+							<img class="responsive-img monetico" src="assets/images/paiement-securise-stripe.jpeg" alt="Stripe protège vos achats">
+						</div>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="collapsible-header">
+					<i class="fab fa-cc-paypal"></i>Payer avec Paypal</div>
+				<div class="collapsible-body">
+					<div class="row">
+						<div class="center-align">
+							{{ form_row(form.paypal) }}
+							<p>J'accepte les
+								<a href="https://feelwellshop.com/fr/conditions-generales-de-ventes" target="_blank">conditions générales de vente</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
