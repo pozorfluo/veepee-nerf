@@ -15,14 +15,13 @@
         </main>
 
         {% if api_error %}
-        <script>
-            {% if api_error == "api_request_order_failed" %}
-            alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');
-            {% elseif api_error == "api_request_status_failed" %}
-            alert('Commande [{{ order_id }}] Votre paiement à abouti, mais nous rencontrons rencontrons un problème avec le vaisseau mère !');
-            {% endif %}
-        </script>
-    {% endif %}
+            <script>
+                {% if api_error == "api_request_order_failed" %}
+                alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');
+                {% elseif api_error == "api_request_status_failed" %}
+                {% endif %}
+            </script>
+        {% endif %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
