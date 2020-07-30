@@ -19,7 +19,7 @@
             {% if api_error == "api_request_order_failed" %}
             alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');
             {% elseif api_error == "api_request_status_failed" %}
-            alert('Votre paiement a échoué. Vous pouvez réessayer dès maintenant.');
+            alert('Commande [{{ order_id }}] Votre paiement à abouti, mais nous rencontrons rencontrons un problème avec le vaisseau mère !');
             {% endif %}
         </script>
     {% endif %}
