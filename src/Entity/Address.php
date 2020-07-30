@@ -229,17 +229,17 @@ class Address
         return $this;
     }
 
-    public function isEmpty(): bool
-    {
-        foreach ($this as $key => $value) {
-            if (
-                $value !== null
-                && $key !== 'client'
-                // && $key !== 'delivery'
-            ) {
-                return false;
-            }
-        }
-        return true;
-    }
+    // public function isEmpty(): bool
+    // {
+    //     foreach ($this as $key => $value) {
+    //         if (
+    //             $value !== null
+    //             && $key !== 'client'
+    //             // && $key !== 'delivery'
+    //         ) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
 }

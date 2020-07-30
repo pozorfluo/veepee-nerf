@@ -7,9 +7,13 @@ use App\Entity\Address;
 use App\Entity\OrderInfo;
 use App\Form\OrderInfoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class LandingPageController extends AbstractController
 {
@@ -17,7 +21,7 @@ class LandingPageController extends AbstractController
     /**
      * @Route("/", name="landing_page")
      */
-    public function index(Request $request) : Response
+    public function index(Request $request): Response
     {
         $orderInfo = (new OrderInfo())
             ->setStatus('Waiting')
@@ -50,12 +54,80 @@ class LandingPageController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-    
+
     /**
      * @Route("/confirmation", name="confirmation")
      */
-    public function confirmation() : Response
+    public function confirmation(): Response
     {
         return $this->render('landing_page/confirmation.html.twig', []);
+    }
+
+    /**
+     * @Route("/api", name="api_test")
+     */
+    public function testApi(Request $request, HttpClientInterface $httpClient): Response
+    {
+        $url = 'https://api-commerce.simplon-roanne.com/order';
+        $payload = <<<JSON
+       {
+            "order": {
+              "id": 1,
+              "product": "Nerf Elite Jolt",
+              "payment_method": "paypal",
+              "status": "WAITING",
+              "client": {
+                "firstname": "Z",
+                "lastname": "API CALL TEST",
+                "email": "francois.dupont@gmail.com"
+              },
+              "addresses": {
+                "billing": {
+                  "address_line1": "1, rue du test",
+                  "address_line2": "3ème étage",
+                  "city": "Lyon",
+                  "zipcode": "69000",
+                  "country": "France",
+                  "phone": "string"
+                },
+                "shippaing": {
+                  "address_line1": "1, rue du test",
+                  "address_line2": "3ème étage",
+                  "city": "Lyon",
+                  "zipcode": "69000",
+                  "country": "France",
+                  "phone": "string"
+                }
+              }
+            }
+          }
+JSON;
+        $api_error = $request->get("api_error") ?? "";
+
+        if (!$api_error) {
+            try {
+                $response = $httpClient->request('POST', $url, [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
+                        'Content-Type' => 'application/json',
+                        'User-Agent' => 'veepee-nerf'
+                    ],
+                    'body' => $payload,
+                    'timeout' => 10
+                ]);
+                dump($response->getStatusCode());
+                dump($response->toArray());
+            } catch (ClientException $e) {
+                dump($e);
+                return $this->redirectToRoute("api_test", [
+                    'api_error' => 'api_request_order_failed'
+                ]);
+            }
+        }
+        // $api_error = $request->get("api_error") ?? "";
+        return $this->render('test.html.twig', [
+            'api_error' => $api_error,
+        ]);
     }
 }

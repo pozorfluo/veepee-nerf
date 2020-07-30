@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>test API request</title>
+
+
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+
+
+        <main class="page">
+            {% block body %}{% endblock %}
+        </main>
+
+        {% if api_error %}
+        <script>
+            {% if api_error == "api_request_order_failed" %}
+            alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');
+            {% elseif api_error == "api_request_status_failed" %}
+            alert('Votre paiement a échoué. Vous pouvez réessayer dès maintenant.');
+            {% endif %}
+        </script>
+    {% endif %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
