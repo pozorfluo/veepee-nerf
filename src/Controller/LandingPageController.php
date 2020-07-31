@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\HttpClient\HttpClient;
 
 class LandingPageController extends AbstractController
 {
@@ -26,7 +25,7 @@ class LandingPageController extends AbstractController
         ApiCommerceClient $apiClient
     ): Response {
         $order = (new OrderInfo())
-            ->setStatus('Waiting')
+            ->setStatus('WAITING')
             ->setClient(
                 (new Client())
                     ->addAddress((new Address())->setType('billing'))
@@ -49,7 +48,7 @@ class LandingPageController extends AbstractController
             // $order->setApiOrderId(65);
 
             try {
-                $order->setApiOrderId($apiClient->createOrder($order));
+                $order->setApiOrderId($apiClient->createOrder($order) ?? -1);
             } catch (ClientException $e) {
                 dump($e);
                 return $this->redirectToRoute("api_test", [
@@ -132,9 +131,9 @@ JSON;
                     'timeout' => 10
                 ]);
                 dump($response->getStatusCode());
-                return $this->redirectToRoute("api_validation_test", [
-                    'id' => $response->toArray()['order_id'],
-                ]);
+                // return $this->redirectToRoute("api_validation_test", [
+                //     'id' => $response->toArray()['order_id'],
+                // ]);
             } catch (ClientException $e) {
                 dump($e);
                 return $this->redirectToRoute("api_test", [

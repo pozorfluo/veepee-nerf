@@ -4,6 +4,7 @@ namespace App\Ecommerce;
 
 use App\Entity\OrderInfo;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiCommerceClient
@@ -45,14 +46,14 @@ class ApiCommerceClient
 
         return json_encode([
             'order' => [
-                'id' => $order->getId(),
+                'id' => intval($order->getId() ?? 1),
                 'product' => $order->getProduct()->getSku(),
                 'payment_method' => $order->getPaymentMethod(),
                 'status' => $order->getStatus(),
                 'client' => [
                     'firstname' => $billing->getFirstname(),
                     'lastname' => $billing->getLastName(),
-                    'email' => $client ->getEmail(),
+                    'email' => $client->getEmail(),
                 ],
                 'addresses' => [
                     'billing' => [
@@ -78,11 +79,11 @@ class ApiCommerceClient
     /**
      * @return int API Commerce order_id
      */
-    public function createOrder(OrderInfo $order): int
+    public function createOrder(OrderInfo $order): ?int
     {
         $payload = $this->map($order);
-        dd($payload);
-
+        dump($payload);
+        dump('Bearer ' . $this->token);
         $url = 'https://api-commerce.simplon-roanne.com/order';
 
         $response = $this->httpClient->request('POST', $url, [
@@ -96,7 +97,14 @@ class ApiCommerceClient
             'timeout' => 10
         ]);
 
-        dd($response->getContent());
-        return $response->toArray()['order_id'];
+        $status = $response->getStatusCode();
+        $content = $response->toArray();
+
+        $level = isset($content['order_id']) ? LogLevel::INFO : LogLevel::ERROR;
+        $this->logger->log($level, '[createOrder]', [$status, $content]);
+        // dump($status);
+        // dd($content);
+
+        return $content['order_id'] ?? null;
     }
 }
