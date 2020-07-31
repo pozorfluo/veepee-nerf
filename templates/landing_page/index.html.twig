@@ -242,4 +242,16 @@
   </div>
 {# {{ form_end(form) }} #}
 </form>
+
+{% if api_error is defined %}
+<script>
+    {% if api_error == "api_create_order_failed" %}
+        alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');
+    {% elseif api_error == "api_confirm_order_failed" %}
+        alert('Votre paiement a été accepté, mais nous rencontrons un problème avec le traitement de votre commande. Notre service client va vous contacter et est toujours disponible par email : client@veepee-nerf.com');
+    {% else %}
+        alert('Un problème avec le vaisseau mère ! Merci de contacter le service client par email : client@veepee-nerf.com.');
+    {% endif %}
+</script>
+{% endif %}
 {% endblock %}

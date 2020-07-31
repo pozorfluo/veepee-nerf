@@ -34,11 +34,6 @@ class ApiCommerceClient
      */
     private function map(OrderInfo $order): string
     {
-        // $data = $order->getData();
-        // dump((array)$order);
-        // dump(json_encode($data));
-        // dd($data);
-
         $client = $order->getClient();
         $addresses = $client->getAddresses();
         $billing = &$addresses[0];
@@ -102,8 +97,8 @@ class ApiCommerceClient
 
         $level = isset($content['order_id']) ? LogLevel::INFO : LogLevel::ERROR;
         $this->logger->log($level, '[createOrder]', [$status, $content]);
-        // dump($status);
-        // dd($content);
+        dump($status);
+        dump($content);
 
         return $content['order_id'] ?? null;
     }

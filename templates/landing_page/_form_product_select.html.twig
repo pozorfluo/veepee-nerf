@@ -8,14 +8,23 @@
         id="order_info_product_{{ item.data.id }}"
         value="{{ item.data.id }}"
         type="radio"
+        {% if item.data.inventory <= 0 %}
+          disabled
+        {% endif %}
       />
 
-      <article>
+      <article
+        {% if item.data.inventory <= 0 %}
+        style="opacity: 0.5;"
+        {% endif %}
+      >
         <div class="card center-align">
           <div class="row">
             <div class="col s12 m12 l4">
-              {% if item.data.hot %}
-              <div class="promo">Offre la plus populaire !</div>
+              {% if item.data.inventory <= 0 %}
+                <div class="promo outofstock">Rupture de stock !</div>
+              {% elseif item.data.hot %}
+                <div class="promo">Offre la plus populaire !</div>
               {% endif %}
               <div class="image-content">
                 <img

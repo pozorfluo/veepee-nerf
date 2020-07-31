@@ -51,16 +51,18 @@ class LandingPageController extends AbstractController
                 $order->setApiOrderId($apiClient->createOrder($order) ?? -1);
             } catch (ClientException $e) {
                 dump($e);
-                return $this->redirectToRoute("api_test", [
-                    'api_error' => 'api_request_order_failed'
+                return $this->render('landing_page/index.html.twig', [
+                    'form' => $form->createView(),
+                    'api_error' => 'api_create_order_failed'
                 ]);
             }
 
-
+            $product = $order->getProduct();
+            $product->setInventory($product->getInventory() - 1);
 
             $entityManager->persist($order);
             $entityManager->flush();
-            dd($order);
+            dump($order);
             return $this->redirectToRoute('confirmation');
         }
 
@@ -76,117 +78,153 @@ class LandingPageController extends AbstractController
     {
         return $this->render('landing_page/confirmation.html.twig', []);
     }
-
     /**
-     * @Route("/api", name="api_test")
+     * @Route("/stripe", name="stripe_test")
      */
-    public function testApi(Request $request, HttpClientInterface $httpClient): Response
+    public function testStripe(Request $request, HttpClientInterface $httpClient): Response
     {
-        $url = 'https://api-commerce.simplon-roanne.com/order';
-        $payload = <<<JSON
-        {
-            "order": {
-                "id": 5,
-                "product": "Nerf Elite Jolt",
-                "payment_method": "paypal",
-                "status": "WAITING",
-                "client": {
-                    "firstname": "Z",
-                    "lastname": "API CALL TEST",
-                    "email": "francois.dupont@gmail.com"
-                },
-                "addresses": {
-                "billing": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                },
-                "shipping": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                }
-                }
-            }
-        }
-JSON;
-        $api_error = $request->get("api_error") ?? "";
+        // \Stripe\Stripe::setApiKey('sk_test_51GxBXtBaAL5MTpCuXxJBzIB2JAqQtxPCV8ivS0jPWixXK1W6feqkUk6M4Hm3d7PQcVpsegEHyVFCsPe09KYAO8DY00uBBxYUe0');
 
-        if (!$api_error) {
-            try {
-                $response = $httpClient->request('POST', $url, [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
-                        'Content-Type' => 'application/json',
-                        'User-Agent' => 'veepee-nerf'
-                    ],
-                    'body' => $payload,
-                    'timeout' => 10
-                ]);
-                dump($response->getStatusCode());
-                // return $this->redirectToRoute("api_validation_test", [
-                //     'id' => $response->toArray()['order_id'],
-                // ]);
-            } catch (ClientException $e) {
-                dump($e);
-                return $this->redirectToRoute("api_test", [
-                    'api_error' => 'api_request_order_failed'
-                ]);
-            }
-        }
+        // dd(\Stripe\PaymentIntent::create([
+        //     'amount' => 1000,
+        //     'currency' => 'eur',
+        //     'payment_method_types' => ['card'],
+        //     'receipt_email' => 'jenny.rosen@example.com',
+        // ]));
+        dump($this->getParameter('app.stripe_key'));
+
+        $stripe = new \Stripe\StripeClient(
+            'sk_test_51GxBXtBaAL5MTpCuXxJBzIB2JAqQtxPCV8ivS0jPWixXK1W6feqkUk6M4Hm3d7PQcVpsegEHyVFCsPe09KYAO8DY00uBBxYUe0'
+        );
+
+        $intent = $stripe->paymentIntents->create([
+            'amount' => 2000,
+            'currency' => 'eur',
+            'payment_method_types' => ['card'],
+            'receipt_email' => 'jenny.rosen@example.com',
+            'description' => 'veepee-nerf' . ' sku ' . 'bundle name',
+            'metadata' => ['sku' => 'sku'],
+
+
+        ]);
+
+        dump($intent);
+        dump($stripe);
+
         return $this->render('test.html.twig', [
-            'api_error' => $api_error,
+            'intent' => $intent,
         ]);
     }
-    /**
-     * @Route("/api_validation/{id}", name="api_validation_test")
-     */
-    public function testApiValidation(
-        Request $request,
-        HttpClientInterface $httpClient,
-        string $id
-    ): Response {
-        $url = 'https://api-commerce.simplon-roanne.com/order/' . $id . '/status';
-        $payload = <<<JSON
-        {
-            "status": "PAID"
-        }
-JSON;
-        $api_error = $request->get("api_error") ?? "";
+    //     /**
+    //      * @Route("/api", name="api_test")
+    //      */
+    //     public function testApi(Request $request, HttpClientInterface $httpClient): Response
+    //     {
+    //         $url = 'https://api-commerce.simplon-roanne.com/order';
+    //         $payload = <<<JSON
+    //         {
+    //             "order": {
+    //                 "id": 5,
+    //                 "product": "Nerf Elite Jolt",
+    //                 "payment_method": "paypal",
+    //                 "status": "WAITING",
+    //                 "client": {
+    //                     "firstname": "Z",
+    //                     "lastname": "API CALL TEST",
+    //                     "email": "francois.dupont@gmail.com"
+    //                 },
+    //                 "addresses": {
+    //                 "billing": {
+    //                     "address_line1": "1, rue du test",
+    //                     "address_line2": "3ème étage",
+    //                     "city": "Lyon",
+    //                     "zipcode": "69000",
+    //                     "country": "France",
+    //                     "phone": "string"
+    //                 },
+    //                 "shipping": {
+    //                     "address_line1": "1, rue du test",
+    //                     "address_line2": "3ème étage",
+    //                     "city": "Lyon",
+    //                     "zipcode": "69000",
+    //                     "country": "France",
+    //                     "phone": "string"
+    //                 }
+    //                 }
+    //             }
+    //         }
+    // JSON;
+    //         $api_error = $request->get("api_error") ?? "";
 
-        if (!$api_error) {
-            try {
-                $response = $httpClient->request('POST', $url, [
-                    'headers' => [
-                        'Accept' => 'application/json',
-                        'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
-                        'Content-Type' => 'application/json',
-                        'User-Agent' => 'veepee-nerf'
-                    ],
-                    'body' => $payload,
-                    'timeout' => 10
-                ]);
-                dump($url);
-                dump($response->getStatusCode());
-                dd($response->toArray());
-            } catch (ClientException $e) {
-                dump($e);
-                return $this->redirectToRoute("api_test", [
-                    'api_error' => 'api_request_status_failed'
-                ]);
-            }
-            return $this->redirectToRoute("confirmation");
-        }
-        return $this->render('test.html.twig', [
-            'api_error' => $api_error,
-            'order_id' => $id,
-        ]);
-    }
+    //         if (!$api_error) {
+    //             try {
+    //                 $response = $httpClient->request('POST', $url, [
+    //                     'headers' => [
+    //                         'Accept' => 'application/json',
+    //                         'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
+    //                         'Content-Type' => 'application/json',
+    //                         'User-Agent' => 'veepee-nerf'
+    //                     ],
+    //                     'body' => $payload,
+    //                     'timeout' => 10
+    //                 ]);
+    //                 dump($response->getStatusCode());
+    //                 // return $this->redirectToRoute("api_validation_test", [
+    //                 //     'id' => $response->toArray()['order_id'],
+    //                 // ]);
+    //             } catch (ClientException $e) {
+    //                 dump($e);
+    //                 return $this->redirectToRoute("api_test", [
+    //                     'api_error' => 'api_request_order_failed'
+    //                 ]);
+    //             }
+    //         }
+    //         return $this->render('test.html.twig', [
+    //             'api_error' => $api_error,
+    //         ]);
+    //     }
+    //     /**
+    //      * @Route("/api_validation/{id}", name="api_validation_test")
+    //      */
+    //     public function testApiValidation(
+    //         Request $request,
+    //         HttpClientInterface $httpClient,
+    //         string $id
+    //     ): Response {
+    //         $url = 'https://api-commerce.simplon-roanne.com/order/' . $id . '/status';
+    //         $payload = <<<JSON
+    //         {
+    //             "status": "PAID"
+    //         }
+    // JSON;
+    //         $api_error = $request->get("api_error") ?? "";
+
+    //         if (!$api_error) {
+    //             try {
+    //                 $response = $httpClient->request('POST', $url, [
+    //                     'headers' => [
+    //                         'Accept' => 'application/json',
+    //                         'Authorization' => 'Bearer mJxTXVXMfRzLg6ZdhUhM4F6Eutcm1ZiPk4fNmvBMxyNR4ciRsc8v0hOmlzA0vTaX',
+    //                         'Content-Type' => 'application/json',
+    //                         'User-Agent' => 'veepee-nerf'
+    //                     ],
+    //                     'body' => $payload,
+    //                     'timeout' => 10
+    //                 ]);
+    //                 dump($url);
+    //                 dump($response->getStatusCode());
+    //                 dd($response->toArray());
+    //             } catch (ClientException $e) {
+    //                 dump($e);
+    //                 return $this->redirectToRoute("api_test", [
+    //                     'api_error' => 'api_request_status_failed'
+    //                 ]);
+    //             }
+    //             return $this->redirectToRoute("confirmation");
+    //         }
+    //         return $this->render('test.html.twig', [
+    //             'api_error' => $api_error,
+    //             'order_id' => $id,
+    //         ]);
+    //     }
 }

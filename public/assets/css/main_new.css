@@ -59,6 +59,10 @@ article {
 article .promo{
     font-size: 15px;
 }
+
+.formulas article .card .outofstock {
+    background: var(--product-secondary);
+}
 .cure-radio:hover input ~ article {
     border: 1px solid var(--brand-secondary);
     -webkit-transition: all 200ms ease;
