@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="section">
+    <h3 class="header">Paiement par carte bancaire</h3>
+    <div class="divider"></div>
+    <h5>{{ intent.description }}</h5>
+  </div>
+  <div class="row">
+    <div class="col s12">
+      <div class="card white">
+        <div class="card-content">
+          <form id="payment-form">
+            <h3>
+              {{ (intent.amount / 100) |format_currency(intent.currency, {fraction_digit: 2}) }}
+            </h3>
+            <div id="card-element">
+              <!--Stripe.js injects the Card Element-->
+            </div>
+            <button id="submit" data-secret="{{ intent.client_secret }}">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Payer</span>
+            </button>
+
+            <!-- We'll put the error messages in this element -->
+            <div id="card-errors" role="alert"></div>
+            <!-- <p id="card-error" role="alert"></p> -->
+            <p class="result-message hidden">
+              Payment succeeded, see the result in your
+              <a href="" target="_blank">Stripe dashboard.</a>
+              Refresh the page to pay again.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <img class="responsive-img monetico center-align" src="assets/images/paiement-securise-stripe.jpeg" alt="Stripe protège vos achats">
+  </div>
+</div>

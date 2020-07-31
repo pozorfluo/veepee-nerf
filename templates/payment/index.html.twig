@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %} {% block title %} Paiement {% endblock %} {%
+block stylesheets %}
+<link rel="stylesheet" href="{{ asset('stripe.css', 'styles') }}" />
+{% endblock %} {% block body %}
+{{ include('payment/_form_stripe.html.twig') }}
+<div class="divider"></div>
+{% endblock %} {% block javascripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{{ asset('stripe.js', 'scripts') }}" data-locale="fr" defer></script>
+{% endblock %}

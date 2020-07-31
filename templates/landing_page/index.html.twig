@@ -243,7 +243,7 @@
 {# {{ form_end(form) }} #}
 </form>
 
-{% if api_error is defined %}
+{% if api_error is defined and api_error is not empty %}
 <script>
     {% if api_error == "api_create_order_failed" %}
         alert('Impossible de contacter le vaisseau mère ! Réessayer plus tard.');

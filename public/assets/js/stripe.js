@@ -5,9 +5,9 @@
   window.addEventListener("DOMContentLoaded", function (event) {
     // A reference to Stripe.js initialized with your real test publishable API key.
     const stripe = Stripe(
-      "pk_test_51GxBXtBaAL5MTpCuXDqjccAhtRYfVzeTVPdgxM6EHIMeYypX8Z1op6fLfDYOVA6Q4KvU8U1jD1J6eNdA1GLlC5Yh00Fs3BqlVy"
+      "pk_test_51GxBXtBaAL5MTpCuXDqjccAhtRYfVzeTVPdgxM6EHIMeYypX8Z1op6fLfDYOVA6Q4KvU8U1jD1J6eNdA1GLlC5Yh00Fs3BqlVy",
+      { locale: "fr" }
     );
-
     const stripe_elements = stripe.elements();
 
     // Piggy-back on server created PaymentIntent.
