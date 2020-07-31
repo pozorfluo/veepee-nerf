@@ -141,7 +141,7 @@ class Client
         $client['addresses'] = [];
 
         foreach($this->addresses as $address) {
-            $client['addresses'] = $address->getData();
+            $client['addresses'][] = $address->getData();
         }
 
         return $client;

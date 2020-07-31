@@ -28,41 +28,50 @@ class ApiCommerceClient
     }
 
 
-    private function serializeOrder(OrderInfo $order): string
+    /**
+     * Given order must be validated before using mapOrder.
+     */
+    private function map(OrderInfo $order): string
     {
-        $data = $order->getData();
-        dump((array)$order);
-        dump(json_encode($data));
-        dd($data);
+        // $data = $order->getData();
+        // dump((array)$order);
+        // dump(json_encode($data));
+        // dd($data);
+
+        $client = $order->getClient();
+        $addresses = $client->getAddresses();
+        $billing = &$addresses[0];
+        $shipping = &$addresses[1];
+
         return json_encode([
             'order' => [
-                'id' => $data['id'],
-                'product' => $data['product']->getSku(),
-                'payment_method' => $data['paymentMethod'],
-                'status' => 'WAITING',
-                // 'client' => [
-                //     'firstname' => $data['client']->getFirstname(),
-                //     'lastname' => $data['client']->getLastName(),
-                //     'email' => $data['client']->getEmail(),
-                // ],
-                // 'addresses' => [
-                //     'billing' => [
-                //         'address_line1' => $data[''],
-                //         'address_line2' => $data[''],
-                //         'city' => $data[''],
-                //         'zipcode' => $data[''],
-                //         'country' => $data[''],
-                //         'phone' => $data[''],
-                //     ],
-                //     'shipping' => [
-                //         'address_line1' => $data[''],
-                //         'address_line2' => $data[''],
-                //         'city' => $data[''],
-                //         'zipcode' => $data[''],
-                //         'country' => $data[''],
-                //         'phone' => $data[''],
-                //     ],
-                // ]
+                'id' => $order->getId(),
+                'product' => $order->getProduct()->getSku(),
+                'payment_method' => $order->getPaymentMethod(),
+                'status' => $order->getStatus(),
+                'client' => [
+                    'firstname' => $billing->getFirstname(),
+                    'lastname' => $billing->getLastName(),
+                    'email' => $client ->getEmail(),
+                ],
+                'addresses' => [
+                    'billing' => [
+                        'address_line1' =>  $billing->getAddress(),
+                        'address_line2' => $billing->getaddressComplement(),
+                        'city' => $billing->getCity(),
+                        'zipcode' => $billing->getZipCode(),
+                        'country' => $billing->getCountry()->getName(),
+                        'phone' => $billing->getPhone(),
+                    ],
+                    'shipping' => [
+                        'address_line1' => $shipping->getAddress(),
+                        'address_line2' => $shipping->getaddressComplement(),
+                        'city' => $shipping->getCity(),
+                        'zipcode' => $shipping->getZipCode(),
+                        'country' => $shipping->getCountry()->getName(),
+                        'phone' => $shipping->getPhone(),
+                    ],
+                ]
             ]
         ]);
     }
@@ -71,47 +80,11 @@ class ApiCommerceClient
      */
     public function createOrder(OrderInfo $order): int
     {
-        $payload = $this->serializeOrder($order);
-        dump($payload);
-        dump($this->token);
-        dd($order);
+        $payload = $this->map($order);
+        dd($payload);
 
         $url = 'https://api-commerce.simplon-roanne.com/order';
 
-
-        $payload = <<<JSON
-        {
-            "order": {
-                "id": 1,
-                "product": "Nerf Elite Jolt",
-                "payment_method": "paypal",
-                "status": "WAITING",
-                "client": {
-                    "firstname": "Z",
-                    "lastname": "API CALL TEST",
-                    "email": "francois.dupont@gmail.com"
-                },
-                "addresses": {
-                "billing": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                },
-                "shipping": {
-                    "address_line1": "1, rue du test",
-                    "address_line2": "3ème étage",
-                    "city": "Lyon",
-                    "zipcode": "69000",
-                    "country": "France",
-                    "phone": "string"
-                }
-                }
-            }
-        }
-JSON;
         $response = $this->httpClient->request('POST', $url, [
             'headers' => [
                 'Accept' => 'application/json',
